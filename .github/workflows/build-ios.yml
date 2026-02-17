@@ -66,10 +66,12 @@ jobs:
           name: xcode-build-log
           path: web/xcode_build.log
 
-      - name: Check build status
+      - name: Check build status and print logs
         run: |
           if [ -z "$(find web/ios/build -name 'App.app' -type d)" ]; then
-            echo "Build failed, check xcode-build-log artifact"
+            echo "----------- XCODE BUILD LOG -----------"
+            cat web/xcode_build.log
+            echo "---------------------------------------"
             exit 1
           fi
 

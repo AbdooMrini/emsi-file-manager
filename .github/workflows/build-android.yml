@@ -60,10 +60,12 @@ jobs:
           name: gradle-build-log
           path: web/gradle_build.log
 
-      - name: Check build status
+      - name: Check build status and print logs
         run: |
           if [ ! -f web/android/app/build/outputs/apk/debug/app-debug.apk ]; then
-            echo "Build failed, check gradle-build-log artifact"
+            echo "----------- GRADLE BUILD LOG -----------"
+            cat web/gradle_build.log
+            echo "----------------------------------------"
             exit 1
           fi
 
