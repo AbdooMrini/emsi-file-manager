@@ -48,6 +48,7 @@ jobs:
 
       - name: Build iOS app (unsigned for simulator)
         working-directory: ./web/ios/App
+        continue-on-error: true
         run: |
           xcodebuild build \
             -project App.xcodeproj \
@@ -57,8 +58,20 @@ jobs:
             -derivedDataPath ../build \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            | xcpretty || xcodebuild build -project App.xcodeproj -scheme App -configuration Debug -destination 'generic/platform=iOS Simulator' -derivedDataPath ../build CODE_SIGN_IDENTITY="-" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO > ../../xcode_build.log 2>&1
+
+      - name: Upload Xcode build log
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcode-build-log
+          path: web/xcode_build.log
+
+      - name: Check build status
+        run: |
+          if [ -z "$(find web/ios/build -name 'App.app' -type d)" ]; then
+            echo "Build failed, check xcode-build-log artifact"
+            exit 1
+          fi
 
       - name: Create IPA package
         working-directory: ./web/ios
