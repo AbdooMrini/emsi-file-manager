@@ -1,0 +1,400 @@
+/* ═══════════════════════════════════════════════════
+   FolderBrowser Styles
+   ═══════════════════════════════════════════════════ */
+
+.browser-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.browser-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 16px;
+}
+
+.browser-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.browser-title .highlight {
+    color: var(--accent-blue);
+}
+
+.count-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-glass);
+    padding: 2px 10px;
+    border-radius: var(--radius-xl);
+}
+
+/* ─── View Controls ─── */
+.view-controls {
+    display: flex;
+    background: var(--bg-glass);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+    gap: 2px;
+}
+
+.view-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.view-btn:hover {
+    color: var(--text-primary);
+}
+
+.view-btn.active {
+    background: var(--accent-blue);
+    color: white;
+}
+
+/* ─── Grid View ─── */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.item-card.grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 16px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    animation: fadeIn 0.3s ease forwards;
+    opacity: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.item-card.grid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.item-card.grid:hover {
+    background: var(--bg-glass-hover);
+    border-color: var(--border-glass-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.item-card.grid:hover::before {
+    opacity: 1;
+}
+
+.item-card.grid .item-icon-wrap {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.item-card.grid .item-info {
+    width: 100%;
+}
+
+.item-card.grid .item-name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-card.grid .item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.7rem;
+}
+
+.item-card.grid .item-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 12px;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.item-card.grid:hover .item-actions {
+    opacity: 1;
+}
+
+.item-card.grid .item-arrow {
+    display: none;
+}
+
+/* ─── List View ─── */
+.items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item-card.list {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: var(--bg-glass);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    animation: fadeIn 0.2s ease forwards;
+    opacity: 0;
+}
+
+.item-card.list:hover {
+    background: var(--bg-glass-hover);
+    border-color: var(--border-glass);
+}
+
+.item-card.list .item-icon-wrap {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.item-card.list .item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.item-card.list .item-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
+.item-card.list .item-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 0.75rem;
+    margin-top: 2px;
+    align-items: center;
+}
+
+.item-card.list .item-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.item-card.list:hover .item-actions {
+    opacity: 1;
+}
+
+/* ─── Common ─── */
+.folder-count {
+    position: absolute;
+    bottom: -2px;
+    right: -6px;
+    font-size: 0.6rem;
+    background: var(--accent-blue);
+    color: white;
+    padding: 1px 5px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.item-badge {
+    padding: 1px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.65rem;
+    letter-spacing: 0.02em;
+}
+
+.item-size {
+    color: var(--text-muted);
+}
+
+.item-date {
+    color: var(--text-muted);
+}
+
+.item-arrow {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    transition: transform var(--transition-fast);
+}
+
+.item-card:hover .item-arrow {
+    transform: translateX(4px);
+    color: var(--accent-blue);
+}
+
+.action-btn {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    transition: all var(--transition-fast);
+    color: var(--text-primary);
+}
+
+.action-btn:hover {
+    background: var(--bg-glass-active);
+    border-color: var(--accent-blue);
+    transform: scale(1.1);
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ─── Skeleton ─── */
+.skeleton-card {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.skeleton-card.list {
+    flex-direction: row;
+    min-height: 60px;
+    justify-content: flex-start;
+}
+
+/* ─── Error State ─── */
+.error-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.error-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.error-state h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.error-state p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.retry-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all var(--transition-fast);
+}
+
+.retry-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--accent-blue-glow);
+}
+
+/* ─── Empty State ─── */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.empty-state h3 {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 768px) {
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 8px;
+    }
+
+    .item-card.grid {
+        padding: 14px 10px;
+    }
+
+    .item-card.grid .item-icon-wrap {
+        font-size: 2rem;
+    }
+
+    .item-card.grid .item-actions,
+    .item-card.list .item-actions {
+        opacity: 1;
+    }
+
+    .browser-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .browser-title {
+        font-size: 1rem;
+    }
+}

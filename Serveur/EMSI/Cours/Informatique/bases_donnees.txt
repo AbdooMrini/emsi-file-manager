@@ -1,0 +1,9 @@
+Bases de données relationnelles
+================================
+
+Cours de SQL et modélisation de données.
+
+- Modèle Entité-Association
+- Normalisation (1NF, 2NF, 3NF)
+- Requêtes SQL avancées
+- Transactions et concurrence

@@ -1,0 +1,12 @@
+Ceci est un fichier PDF de test pour le cours de Mathématiques.
+Contenu de démonstration pour l'application EMSI File Manager.
+
+Chapitre 1: Algèbre Linéaire
+- Matrices et déterminants
+- Systèmes d'équations linéaires
+- Espaces vectoriels
+
+Chapitre 2: Analyse
+- Limites et continuité
+- Dérivées et intégrales
+- Séries de Fourier

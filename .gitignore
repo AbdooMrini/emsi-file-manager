@@ -1,0 +1,26 @@
+# Dependencies
+web/node_modules/
+
+# Build outputs
+web/dist/
+web/android/app/build/
+web/android/.gradle/
+web/android/build/
+web/android/capacitor-cordova-android-plugins/build/
+web/ios/App/build/
+web/ios/App/Pods/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+web/tsconfig.tsbuildinfo
+web/node_modules/.tmp/
+
+# Temp
+*.log

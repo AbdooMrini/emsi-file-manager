@@ -1,0 +1,65 @@
+name: Build iOS App
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./web
+        run: npm ci
+
+      - name: Build web assets
+        working-directory: ./web
+        run: npm run build
+
+      - name: Sync Capacitor iOS
+        working-directory: ./web
+        run: npx cap sync ios
+
+      - name: Install CocoaPods
+        working-directory: ./web/ios/App
+        run: pod install
+
+      - name: Build iOS (Simulator - No signing required)
+        working-directory: ./web/ios
+        run: |
+          xcodebuild build \
+            -workspace App/App.xcworkspace \
+            -scheme App \
+            -configuration Debug \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Archive Build Output
+        working-directory: ./web/ios
+        run: |
+          cd build/Build/Products/Debug-iphonesimulator
+          zip -r ../../../../emsi-filemanager-ios.zip App.app
+
+      - name: Upload iOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: emsi-filemanager-ios
+          path: web/ios/emsi-filemanager-ios.zip
+          retention-days: 30
