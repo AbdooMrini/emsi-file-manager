@@ -10,7 +10,7 @@
 
 header('Content-Type: application/json; charset=utf-8');
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$allowedOrigins = ['https://emsi-file.me', 'http://localhost:5173', 'http://localhost'];
+$allowedOrigins = ['https://emsi-file.me', 'http://localhost:5173', 'http://localhost', 'https://localhost', 'capacitor://localhost'];
 if (in_array($origin, $allowedOrigins)) {
     header('Access-Control-Allow-Origin: ' . $origin);
 } else {

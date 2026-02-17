@@ -1,8 +1,8 @@
 // API Service for EMSI File Manager
 
-const API_BASE = import.meta.env.PROD
+const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.PROD
     ? 'https://emsi-file.me/api'
-    : '/api';
+    : '/api');
 
 export interface FileItem {
     name: string;
