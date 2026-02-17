@@ -8,9 +8,9 @@
   --bg-primary: #0a0e1a;
   --bg-secondary: #111827;
   --bg-card: rgba(17, 24, 39, 0.8);
-  --bg-glass: rgba(255, 255, 255, 0.05);
-  --bg-glass-hover: rgba(255, 255, 255, 0.1);
-  --bg-glass-active: rgba(255, 255, 255, 0.15);
+  --bg-glass: rgba(255, 255, 255, 0.08);
+  --bg-glass-hover: rgba(255, 255, 255, 0.15);
+  --bg-glass-active: rgba(255, 255, 255, 0.2);
   --border-glass: rgba(255, 255, 255, 0.08);
   --border-glass-hover: rgba(255, 255, 255, 0.15);
 

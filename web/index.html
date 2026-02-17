@@ -15,10 +15,63 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
   <title>EMSI File Manager</title>
+  <style>
+    #app-loading{display:flex;align-items:center;justify-content:center;height:100vh;background:#0a0e1a;color:#f1f5f9;font-family:'Inter',sans-serif;flex-direction:column;gap:12px}
+    #app-loading .spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.1);border-top-color:#3b82f6;border-radius:50%;animation:spin 0.8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #app-error{position:fixed;inset:0;background:#0a0e1a;color:#ef4444;padding:24px;z-index:99999;font-family:'Inter',sans-serif;overflow:auto;display:none}
+    #app-error h2{color:#f59e0b;margin-bottom:12px;font-size:18px}
+    #app-error pre{background:#1e293b;padding:12px;border-radius:8px;color:#f1f5f9;font-size:11px;overflow:auto;white-space:pre-wrap;margin-top:12px}
+  </style>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div id="app-loading">
+      <div style="font-size:28px">📚</div>
+      <div class="spinner"></div>
+      <div style="font-size:14px;opacity:0.7">Chargement...</div>
+    </div>
+  </div>
+  <div id="app-error">
+    <h2>⚠️ Erreur de l'application</h2>
+    <p id="app-error-msg"></p>
+    <pre id="app-error-stack"></pre>
+    <button onclick="location.reload()" style="margin-top:16px;padding:10px 24px;background:#3b82f6;color:white;border:none;border-radius:8px;font-size:14px;cursor:pointer">🔄 Recharger</button>
+  </div>
+  <noscript>
+    <div style="padding:40px;color:#f1f5f9;background:#0a0e1a;text-align:center;height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif">
+      <p>JavaScript est requis pour cette application. Veuillez activer JavaScript ou mettre à jour votre navigateur.</p>
+    </div>
+  </noscript>
+  <!-- Error handler (non-module, runs on all browsers) -->
+  <script>
+    window.onerror = function(msg, src, line, col, err) {
+      var el = document.getElementById('app-error');
+      var msgEl = document.getElementById('app-error-msg');
+      var stackEl = document.getElementById('app-error-stack');
+      if (el && msgEl) {
+        msgEl.textContent = msg;
+        stackEl.textContent = (src ? src + ':' + line + ':' + col + '\n\n' : '') + (err && err.stack ? err.stack : '');
+        el.style.display = 'block';
+      }
+    };
+    window.addEventListener('unhandledrejection', function(e) {
+      var el = document.getElementById('app-error');
+      var msgEl = document.getElementById('app-error-msg');
+      var stackEl = document.getElementById('app-error-stack');
+      if (el && msgEl) {
+        var reason = e.reason || {};
+        msgEl.textContent = reason.message || String(e.reason);
+        stackEl.textContent = reason.stack || '';
+        el.style.display = 'block';
+      }
+    });
+  </script>
+  <!-- Module fallback: show message if ES modules not supported -->
+  <script nomodule>
+    document.getElementById('app-loading').innerHTML = '<div style="text-align:center;padding:20px"><h2 style="color:#f59e0b;margin-bottom:12px">Mise à jour requise</h2><p style="color:#94a3b8">Votre WebView Android doit être mis à jour pour utiliser cette application.</p><p style="color:#94a3b8;margin-top:8px">Veuillez mettre à jour Android System WebView depuis le Google Play Store.</p></div>';
+  </script>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 

@@ -4,6 +4,7 @@ import Header from './components/Header';
 import FolderBrowser from './components/FolderBrowser';
 import FileViewer from './components/FileViewer';
 import OfflineManager from './components/OfflineManager';
+import { SplashScreen } from '@capacitor/splash-screen';
 import { browseDirectory, searchFiles, type FileItem, type BrowseResponse } from './services/api';
 
 type View = 'browser' | 'offline';
@@ -33,6 +34,12 @@ function App() {
     const handleOffline = () => setIsOnline(false);
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
+
+    // Hide splash screen safely
+    SplashScreen.hide().catch((err) => {
+      console.warn('SplashScreen.hide failed:', err);
+    });
+
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
