@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-latest
+    runs-on: macos-14
     
     steps:
       - name: Checkout repository
@@ -34,32 +34,40 @@ jobs:
         working-directory: ./web
         run: npx cap sync ios
 
-      - name: Install CocoaPods
-        working-directory: ./web/ios/App
-        run: pod install
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app || sudo xcode-select -s /Applications/Xcode.app
 
-      - name: Build iOS (Simulator - No signing required)
-        working-directory: ./web/ios
+      - name: Resolve Swift Package Manager dependencies
+        working-directory: ./web/ios/App
+        run: xcodebuild -resolvePackageDependencies -project App.xcodeproj -scheme App
+
+      - name: Build iOS app (unsigned)
+        working-directory: ./web/ios/App
         run: |
           xcodebuild build \
-            -workspace App/App.xcworkspace \
+            -project App.xcodeproj \
             -scheme App \
             -configuration Debug \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
-            -derivedDataPath build \
-            CODE_SIGN_IDENTITY="" \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath ../build \
+            CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO \
+            | tail -50
 
-      - name: Archive Build Output
+      - name: Create IPA-like package
         working-directory: ./web/ios
         run: |
-          cd build/Build/Products/Debug-iphonesimulator
-          zip -r ../../../../emsi-filemanager-ios.zip App.app
+          APP_PATH=$(find build/Build/Products -name "App.app" -type d | head -1)
+          echo "Found app at: $APP_PATH"
+          mkdir -p Payload
+          cp -r "$APP_PATH" Payload/
+          zip -r EMSI-FileManager-ios.zip Payload/
+          ls -la EMSI-FileManager-ios.zip
 
       - name: Upload iOS artifact
         uses: actions/upload-artifact@v4
         with:
-          name: emsi-filemanager-ios
-          path: web/ios/emsi-filemanager-ios.zip
-          retention-days: 30
+          name: EMSI-FileManager-iOS
+          path: web/ios/EMSI-FileManager-ios.zip
+          retention-days: 90
