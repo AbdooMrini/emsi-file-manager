@@ -1,0 +1,15 @@
+{
+    "appId": "com.emsi.filemanager",
+    "appName": "EMSI File Manager",
+    "webDir": "dist",
+    "server": {
+        "androidScheme": "https"
+    },
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 1500,
+            "backgroundColor": "#0a0e1a",
+            "showSpinner": false
+        }
+    }
+}

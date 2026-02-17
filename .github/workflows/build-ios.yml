@@ -30,18 +30,21 @@ jobs:
         working-directory: ./web
         run: npm run build
 
-      - name: Sync Capacitor iOS
+      - name: Copy web assets to iOS
         working-directory: ./web
-        run: npx cap sync ios
+        run: npx cap copy ios
 
-      - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app || sudo xcode-select -s /Applications/Xcode.app
+      - name: List available Xcode versions
+        run: ls /Applications/ | grep Xcode || true
 
       - name: Resolve Swift Package Manager dependencies
         working-directory: ./web/ios/App
-        run: xcodebuild -resolvePackageDependencies -project App.xcodeproj -scheme App
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project App.xcodeproj \
+            -scheme App
 
-      - name: Build iOS app (unsigned)
+      - name: Build iOS app (unsigned for simulator)
         working-directory: ./web/ios/App
         run: |
           xcodebuild build \
@@ -52,22 +55,21 @@ jobs:
             -derivedDataPath ../build \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            | tail -50
+            CODE_SIGNING_ALLOWED=NO
 
-      - name: Create IPA-like package
+      - name: Create IPA package
         working-directory: ./web/ios
         run: |
           APP_PATH=$(find build/Build/Products -name "App.app" -type d | head -1)
           echo "Found app at: $APP_PATH"
           mkdir -p Payload
           cp -r "$APP_PATH" Payload/
-          zip -r EMSI-FileManager-ios.zip Payload/
-          ls -la EMSI-FileManager-ios.zip
+          cd Payload && zip -r ../EMSI-FileManager.ipa . && cd ..
+          ls -la EMSI-FileManager.ipa
 
       - name: Upload iOS artifact
         uses: actions/upload-artifact@v4
         with:
           name: EMSI-FileManager-iOS
-          path: web/ios/EMSI-FileManager-ios.zip
+          path: web/ios/EMSI-FileManager.ipa
           retention-days: 90
