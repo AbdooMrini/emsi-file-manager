@@ -34,7 +34,9 @@ jobs:
 
       - name: Copy web assets to Android
         working-directory: ./web
-        run: npm run cap:copy android
+        run: |
+          echo "Current directory: $(pwd)"
+          npm run cap:copy android -- --verbose
 
       - name: Setup Java 21
         uses: actions/setup-java@v4

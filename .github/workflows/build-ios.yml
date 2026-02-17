@@ -34,7 +34,9 @@ jobs:
 
       - name: Copy web assets to iOS
         working-directory: ./web
-        run: npm run cap:copy ios
+        run: |
+          echo "Current directory: $(pwd)"
+          npm run cap:copy ios -- --verbose
 
       - name: List available Xcode versions
         run: ls /Applications/ | grep Xcode || true
