@@ -32,9 +32,9 @@ jobs:
           npm run build
           ls -R dist/
 
-      - name: Copy web assets to iOS
+      - name: Sync Capacitor project
         working-directory: ./web
-        run: npm run cap:copy ios
+        run: npx cap sync ios
 
       - name: List available Xcode versions
         run: ls /Applications/ | grep Xcode || true

@@ -32,9 +32,9 @@ jobs:
           npm run build
           ls -R dist/
 
-      - name: Copy web assets to Android
+      - name: Sync Capacitor project
         working-directory: ./web
-        run: npm run cap:copy android
+        run: npx cap sync android
 
       - name: Setup Java 21
         uses: actions/setup-java@v4
