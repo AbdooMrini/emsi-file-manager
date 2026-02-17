@@ -28,11 +28,13 @@ jobs:
 
       - name: Build web assets
         working-directory: ./web
-        run: npm run build
+        run: |
+          npm run build
+          ls -R dist/
 
       - name: Copy web assets to iOS
         working-directory: ./web
-        run: npx cap copy ios
+        run: npm run cap:copy ios
 
       - name: List available Xcode versions
         run: ls /Applications/ | grep Xcode || true

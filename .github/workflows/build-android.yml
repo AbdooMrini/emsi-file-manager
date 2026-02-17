@@ -28,11 +28,13 @@ jobs:
 
       - name: Build web assets
         working-directory: ./web
-        run: npm run build
+        run: |
+          npm run build
+          ls -R dist/
 
       - name: Copy web assets to Android
         working-directory: ./web
-        run: npx cap copy android
+        run: npm run cap:copy android
 
       - name: Setup Java 21
         uses: actions/setup-java@v4
